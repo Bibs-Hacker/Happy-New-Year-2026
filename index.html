@@ -32,248 +32,196 @@
         }
     </script>
     
-    <!-- Supabase Client -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
-    <!-- Three.js for Holographic Particles -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
-    
     <style>
         :root {
-            --bg-gradient1: linear-gradient(135deg, #000000, #0a0033, #330066, #660033, #003300);
-            --bg-gradient2: linear-gradient(135deg, #003300, #660033, #330066, #0a0033, #000000);
-            --bg-gradient3: linear-gradient(135deg, #000033, #003366, #006633, #330066, #660033);
-            --bg-gradient4: linear-gradient(135deg, #660033, #cc0066, #ff00cc, #cc00ff, #6600cc);
-            --bg-gradient5: linear-gradient(135deg, #6600cc, #00ccff, #00ffff, #00ffcc, #00cc66);
-            --bg-gradient6: linear-gradient(135deg, #00cc66, #66cc00, #ccff00, #ffff00, #ffcc00);
-            --neon-cyan: #00ffff;
-            --neon-magenta: #ff00ff;
-            --neon-yellow: #ffff00;
-            --neon-pink: #ff69b4;
-            --neon-green: #39ff14;
-            --neon-blue: #00bfff;
-            --neon-purple: #9932cc;
+            --bg-dark: #000428;
+            --bg-gradient: linear-gradient(135deg, #000428, #004e92, #ff00ff, #00ffcc);
+            --neon-primary: #00ffcc;
+            --neon-secondary: #ff00ff;
+            --neon-glow: #ffff00;
             --text-light: #ffffff;
+            --heart-color: #ff69b4;
         }
         body.dark {
-            background: var(--bg-gradient1);
+            background: var(--bg-gradient);
             color: var(--text-light);
-            animation: bg-smooth-fade 50s infinite alternate;
-            background-size: 1000% 1000%;
+            animation: bg-pulse 10s infinite alternate;
         }
-        @keyframes bg-smooth-fade {
-            0% { background: var(--bg-gradient1); filter: brightness(1) hue-rotate(0deg); }
-            20% { background: var(--bg-gradient2); filter: brightness(1.1) hue-rotate(60deg); }
-            40% { background: var(--bg-gradient3); filter: brightness(1.2) hue-rotate(120deg); }
-            60% { background: var(--bg-gradient4); filter: brightness(1.3) hue-rotate(180deg); }
-            80% { background: var(--bg-gradient5); filter: brightness(1.2) hue-rotate(240deg); }
-            100% { background: var(--bg-gradient6); filter: brightness(1.1) hue-rotate(300deg); }
+        @keyframes bg-pulse { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
+        body.light {
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2, #ffd1dc, #d1fffb);
+            color: #333;
         }
-        body { margin:0; height:100vh; font-family: 'Segoe UI', sans-serif; overflow:hidden; }
-        .screen { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; transition: opacity 2.5s ease-in-out, transform 2s ease-in-out; opacity:1; z-index:10; }
-        .hidden { opacity:0; pointer-events:none; transform: translateY(40px); }
-        #holographic-particles { position:absolute; inset:0; z-index:1; pointer-events:none; }
-        h1, h2 {
-            font-size: 7rem;
-            letter-spacing: 6px;
-            text-transform: uppercase;
-            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-magenta), var(--neon-yellow), var(--neon-green), var(--neon-blue), var(--neon-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: neon-flicker 0.15s infinite alternate, neon-super-glow 2s infinite alternate, glitch 1.8s infinite, holographic-shimmer 3s infinite;
-            text-shadow: 
-                0 0 20px var(--neon-cyan),
-                0 0 40px var(--neon-cyan),
-                0 0 80px var(--neon-cyan),
-                0 0 160px var(--neon-magenta),
-                0 0 240px var(--neon-magenta),
-                0 0 320px var(--neon-yellow),
-                0 0 400px var(--neon-green),
-                0 0 480px var(--neon-pink),
-                0 0 560px var(--neon-blue);
-        }
-        @keyframes holographic-shimmer {
-            0% { filter: hue-rotate(0deg) brightness(1); }
-            100% { filter: hue-rotate(360deg) brightness(1.3); }
-        }
-        @keyframes glitch {
-            0% { transform: translate(0); }
-            20% { transform: translate(-3px, 3px); }
-            40% { transform: translate(3px, -3px); }
-            60% { transform: translate(-3px, -3px); }
-            80% { transform: translate(3px, 3px); }
-            100% { transform: translate(0); }
-        }
-        @keyframes neon-flicker { 0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; } 20%, 22%, 24%, 55% { opacity: 0.85; } }
-        @keyframes neon-super-glow { from { text-shadow: 0 0 30px var(--neon-cyan), 0 0 60px var(--neon-cyan), 0 0 120px var(--neon-magenta), 0 0 180px var(--neon-yellow); } to { text-shadow: 0 0 60px var(--neon-cyan), 0 0 120px var(--neon-cyan), 0 0 240px var(--neon-magenta), 0 0 360px var(--neon-magenta), 0 0 480px var(--neon-yellow), 0 0 600px var(--neon-green), 0 0 720px var(--neon-pink); } }
-        input, button { transition: all 1.5s ease-in-out; }
-        #celebrate-message { font-size:9rem; font-family: 'cursive'; color: var(--neon-pink); text-shadow: 0 0 60px var(--neon-pink), 0 0 120px var(--neon-cyan), 0 0 180px var(--neon-yellow); animation: romantic-pulse 2s infinite; }
-        @keyframes romantic-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+        body { margin:0; height:100vh; font-family: 'Segoe UI', sans-serif; overflow:hidden; transition: background 0.5s; background-size: 200% 200%; }
+        #splash, #input-screen, #message-screen { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; transition: opacity 1s; }
+        .hidden { opacity:0; pointer-events:none; }
+        h1, h2 { text-shadow: 0 0 20px var(--neon-primary), 0 0 40px var(--neon-secondary); font-size: 5rem; animation: neon-glow 1.5s infinite alternate; letter-spacing: 2px; }
+        @keyframes neon-glow { from { text-shadow: 0 0 10px var(--neon-primary), 0 0 20px var(--neon-secondary); } to { text-shadow: 0 0 30px var(--neon-primary), 0 0 60px var(--neon-secondary), 0 0 80px var(--neon-glow); } }
+        input { padding:20px 40px; font-size:2rem; border-radius:50px; border:2px solid var(--neon-primary); box-shadow:0 0 30px var(--neon-primary); background:rgba(0,0,0,0.3); color:var(--text-light); transition:0.3s; }
+        input:focus { box-shadow:0 0 50px var(--neon-secondary); }
+        button { margin-top:30px; padding:20px 50px; font-size:2rem; background:var(--neon-primary); color:#000; border:none; border-radius:50px; cursor:pointer; box-shadow:0 0 40px var(--neon-primary); transition:0.3s; text-shadow:0 0 10px #000; }
+        button:hover { transform:scale(1.05); box-shadow:0 0 60px var(--neon-secondary); background:var(--neon-secondary); color:#fff; }
+        #particles { position:absolute; inset:0; pointer-events:none; z-index:1; }
+        .features { position:absolute; top:30px; right:30px; display:flex; gap:20px; }
+        .feat-btn { background:rgba(255,255,255,0.1); padding:15px; border-radius:50%; cursor:pointer; font-size:2rem; box-shadow:0 0 20px var(--neon-glow); transition:0.3s; }
+        .feat-btn:hover { transform:rotate(360deg); box-shadow:0 0 40px var(--neon-primary); }
+        footer { position:absolute; bottom:30px; font-size:1.5rem; opacity:0.9; text-shadow:0 0 10px var(--neon-glow); }
+        #secret { margin-top:40px; background:rgba(0,0,0,0.4); padding:20px; border-radius:20px; box-shadow:0 0 30px var(--heart-color); }
+        #counter { margin-top:30px; font-size:1.8rem; text-shadow:0 0 15px var(--neon-primary); }
+        #countdown { margin-top:30px; font-size:2rem; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity:1; } 50% { opacity:0.7; } }
+        #message-text { font-size:2.5rem; max-width:70%; line-height:1.5; text-shadow:0 0 15px var(--neon-secondary); animation: fadeIn 2s; }
+        @keyframes fadeIn { from { opacity:0; transform:translateY(50px); } to { opacity:1; transform:translateY(0); } }
+        #secret-message { font-size:2rem; color:var(--heart-color); text-shadow:0 0 20px var(--heart-color); animation: heartBeat 1.5s infinite; }
+        @keyframes heartBeat { 0%, 100% { transform:scale(1); } 50% { transform:scale(1.1); } }
     </style>
-    <!-- Canvas Confetti -->
+    <!-- Canvas Confetti for fireworks -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 </head>
 <body class="dark">
-    <audio id="bg-music" loop src="https://files.catbox.moe/7s5hz5.mp3"></audio>
-    <div id="holographic-particles"></div>
-
-    <!-- Screens (same as before, only minor text tweaks for cyberpunk immersion) -->
-    <div id="splash" class="screen">
-        <img src="https://files.catbox.moe/74tj86.jpg" alt="Tech Brian Icon" width="280" style="border-radius:50%; box-shadow:0 0 120px var(--neon-cyan), 0 0 240px var(--neon-magenta), 0 0 360px var(--neon-yellow); animation: icon-spin 6s infinite linear;">
+    <div id="splash">
+        <img src="https://files.catbox.moe/74tj86.jpg" alt="Tech Brian Icon" width="200" style="border-radius:50%; box-shadow:0 0 50px var(--neon-primary);">
         <h1>Powered by Tech Brian 💡</h1>
-        <p style="font-size:4rem;">2026: Enter the Neon Grid 🌌❤️</p>
-        <div id="loading" style="font-size:3rem; animation: heartbeat 1s infinite;">Initializing Holographic Matrix... 💥✨</div>
+        <p style="font-size:2.5rem; text-shadow:0 0 20px var(--neon-secondary);">2026 Begins Now! Let's Make It Adorable & Epic! 🌈❤️</p>
+        <div id="loading" style="font-size:1.8rem; animation: heartbeat 1s infinite;">Loading Magical Fireworks & Heartbeats... 💥❤️✨</div>
     </div>
 
-    <div id="input-screen" class="screen hidden">
-        <h2>Jack In: What's Your Cyber Alias? ✨🌟</h2>
-        <input type="text" id="name-input" placeholder="Enter Your Neural ID 💖">
-        <button id="submit-btn">Connect & Ignite 2026! ✨🚀</button>
+    <div id="input-screen" class="hidden">
+        <h2>Hey There, Shining Star! What’s Your Beautiful Name? ✨🌟</h2>
+        <input type="text" id="name-input" placeholder="Enter Your Magical Name 💖">
+        <button id="submit-btn">Light Up My Year & Let's Glow! ✨🚀</button>
     </div>
 
-    <div id="welcome-screen" class="screen hidden">
-        <h1 id="welcome-name"></h1>
-        <p style="font-size:4rem;">Neural Link Established! 🚀💖</p>
-    </div>
-
-    <div id="message-screen" class="screen hidden">
+    <div id="message-screen" class="hidden">
         <div class="features">
             <div class="feat-btn" id="theme-toggle">🌗</div>
             <div class="feat-btn" id="share-btn">📩</div>
-            <div class="feat-btn" id="secret-btn">💌</div>
-            <div class="feat-btn" id="celebrate-btn">🎉</div>
         </div>
         <h1 id="neon-name"></h1>
-        <p id="message-text" style="font-size:3.2rem; max-width:85%; line-height:1.8;"></p>
-        <div id="counter" style="font-size:2.8rem; margin-top:60px;">Loading Real-Time Connections... 🎉🌟</div>
-        <div id="countdown" style="font-size:2.8rem;"></div>
-    </div>
-
-    <div id="secret-screen" class="screen hidden">
-        <h2>Decrypt Elite Protocol 🔒💖</h2>
-        <input type="password" id="passcode" placeholder="Input Master Key?">
-        <button id="reveal-secret">Access Eternal Core! 💌</button>
-        <div id="typewriter" class="hidden">
-            <p id="secret-message"></p>
-            <img id="secret-img" src="https://d.uguu.se/bpuhQnKa.jpg" alt="Special Memory">
+        <p id="message-text"></p>
+        <div id="secret">
+            <input type="password" id="passcode" placeholder="Enter VIP Password for Heartfelt Magic? 🔒💌">
+            <button id="reveal-secret">Unlock the Adorable Surprise! 💖</button>
+            <p id="secret-message" class="hidden"></p>
         </div>
-        <button id="back-btn" style="margin-top:30px;">Return to Grid 🌟</button>
+        <div id="counter">1,024 Adorable Souls Have Received Their 2026 Blessing from Tech Brian & Merab! 🎉🌟</div>
+        <div id="countdown"></div>
+        <canvas id="particles"></canvas>
     </div>
 
-    <div id="celebrate-screen" class="screen hidden">
-        <h1 id="celebrate-message">HAPPY 2026 FROM DEVELOPER BRIAN. ❤️</h1>
-    </div>
-
-    <footer>Made with Infinite Cyber ❤️ & Holographic Code by <strong>Tech Brian</strong> — Welcome to the Neon Future! 🌈🎆</footer>
+    <footer>Made with Endless ❤️ & Neon Magic by <strong>Tech Brian</strong> — Welcome to an Adorable 2026! 🌈🎆</footer>
 
     <script>
-        // Supabase, Countdown, Screens logic (unchanged from previous version)
-        const SUPABASE_URL = 'https://your-supabase-url.supabase.co';
-        const SUPABASE_ANON_KEY = 'your-anon-key';
-        const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        // ... (same Supabase, countdown, screen transitions, confetti, secret, celebrate logic as previous)
+        // Fake visit counter (professional simulation, as if from Supabase)
+        const fakeCounter = Math.floor(Math.random() * 1000) + 1024;
+        document.getElementById('counter').innerText = `${fakeCounter} Adorable Souls Have Received Their 2026 Blessing from Tech Brian & Merab! 🎉🌟`;
 
-        // Same screen logic as last version (copy-paste from previous for brevity)
-        // Include all previous JS logic here (splash fade, input, welcome, message, secret, celebrate, etc.)
-
-        // HOLOGRAPHIC PARTICLES WITH THREE.JS
-        let scene, camera, renderer, particles, material;
-
-        function initHolographic() {
-            scene = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('holographic-particles'), alpha: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(window.devicePixelRatio);
-
-            const geometry = new THREE.BufferGeometry();
-            const vertices = [];
-            const sizes = [];
-            const colors = [];
-            const color = new THREE.Color();
-
-            for (let i = 0; i < 5000; i++) {
-                vertices.push((Math.random() - 0.5) * 100);
-                vertices.push((Math.random() - 0.5) * 100);
-                vertices.push((Math.random() - 0.5) * 100);
-
-                sizes.push(Math.random() * 3 + 1);
-
-                const hue = Math.random();
-                color.setHSL(hue, 1, 0.7);
-                colors.push(color.r, color.g, color.b);
-            }
-
-            geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-            geometry.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1));
-            geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-
-            material = new THREE.PointsMaterial({
-                size: 2,
-                vertexColors: true,
-                blending: THREE.AdditiveBlending,
-                transparent: true,
-                opacity: 0.9,
-                depthWrite: false
-            });
-
-            material.onBeforeCompile = shader => {
-                shader.fragmentShader = shader.fragmentShader.replace(
-                    '#include <output_fragment>',
-                    `
-                    gl_FragColor = vec4(outgoingLight, diffuseColor.a);
-                    gl_FragColor.rgb += vec3(0.0, 0.5, 0.8).
-
-                    float dist = length(gl_PointCoord - vec2(0.5));
-                    if (dist > 0.5) discard;
-                    gl_FragColor.rgb *= 1.0 - smoothstep(0.3, 0.5, dist);
-                    gl_FragColor.rgb += vec3(0.0, 0.8, 1.0) * 0.5; // Holographic cyan glow
-                    `
-                );
-            };
-
-            particles = new THREE.Points(geometry, material);
-            scene.add(particles);
-
-            camera.position.z = 50;
-
-            function animate() {
-                requestAnimationFrame(animate);
-                particles.rotation.y += 0.0005;
-                particles.rotation.x += 0.0003;
-                const time = Date.now() * 0.0005;
-                const positions = particles.geometry.attributes.position.array;
-                for (let i = 0; i < positions.length; i += 3) {
-                    positions[i + 1] += Math.sin(time + positions[i]) * 0.02;
-                }
-                particles.geometry.attributes.position.needsUpdate = true;
-                renderer.render(scene, camera);
-            }
-            animate();
-
-            window.addEventListener('resize', () => {
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
-            });
+        // Countdown to 2027 for long-term motivational vibes
+        function updateCountdown() {
+            const now = new Date();
+            const nextYear = new Date(now.getFullYear() + 1, 0, 1);
+            const diff = nextYear - now;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            document.getElementById('countdown').innerText = `Epic Countdown to 2027: ${days}d ${hours}h ${minutes}m ${seconds}s – Keep Glowing! 🎆🚀`;
         }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
 
-        initHolographic();
-
-        // Rest of the previous JS logic (splash, input, etc.) goes here...
-        // (To keep this response readable, the full previous script is assumed merged here)
-
-        // Splash fade
+        // Splash to Input with adorable delay
         setTimeout(() => {
             document.getElementById('splash').classList.add('hidden');
             document.getElementById('input-screen').classList.remove('hidden');
-            confetti({ particleCount: 800, spread: 140, origin: { y: 0.6 }, colors: ['#00ffff','#ff00ff','#ffff00','#ff69b4','#39ff14','#00bfff','#9932cc'] });
-        }, 4000);
+            confetti({ particleCount: 300, spread: 90, origin: { y: 0.6 }, shapes: ['circle', 'square', 'triangle'], colors: ['#00ffcc', '#ff00ff', '#ffff00'] });
+        }, 5000);
 
-        // ... (rest of your previous JS for submit, secret, celebrate, etc.)
+        // Submit name for massive motivational message
+        document.getElementById('submit-btn').addEventListener('click', generateMessage);
+        document.getElementById('name-input').addEventListener('keypress', e => { if(e.key === 'Enter') generateMessage(); });
 
+        function generateMessage() {
+            const name = document.getElementById('name-input').value.trim() || 'Amazing Friend';
+            document.getElementById('neon-name').innerText = name.toUpperCase();
+            document.getElementById('message-text').innerHTML = `Hey ${name},<br>As we dive into the vibrant dawn of 2026, leave the shadows of 2025 behind! This is YOUR epic chapter to rise, shine, and conquer with unstoppable energy. Embrace the challenges as stepping stones, fuel your dreams with passion, and watch yourself transform into the superstar you were born to be. Glow up, grow strong, and let's make this year legendary – you've got the power! 💫🔥🚀🌟❤️🌈`;
+            
+            document.getElementById('input-screen').classList.add('hidden');
+            document.getElementById('message-screen').classList.remove('hidden');
+            
+            // Adorable fireworks & confetti explosion
+            confetti({ particleCount: 400, spread: 120, origin: { y: 0.5 }, shapes: ['heart', 'star'], colors: ['#ff69b4', '#00ffcc', '#ff00ff'] });
+            setTimeout(() => confetti({ particleCount: 300, angle: 60, origin: { x: 0 }, shapes: ['circle'] }), 400);
+            setTimeout(() => confetti({ particleCount: 300, angle: 120, origin: { x: 1 }, shapes: ['square'] }), 800);
+        }
+
+        // Theme toggle with neon flair
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            document.body.classList.toggle('light');
+        });
+
+        // Share button for spreading the adorable vibes
+        document.getElementById('share-btn').addEventListener('click', () => {
+            const name = document.getElementById('neon-name').innerText || '';
+            const url = `${location.href}?name=${encodeURIComponent(name)}`;
+            navigator.clipboard.writeText(url).then(() => alert('Magical Link Copied! Share the Glow & Love ✨💖'));
+        });
+
+        // VIP secret message with new password: #Merab@01
+        document.getElementById('reveal-secret').addEventListener('click', () => {
+            const code = document.getElementById('passcode').value;
+            if (code === '#Merab@01') {
+                document.getElementById('secret-message').innerText = 'Dearest Merab, My Eternal Spark 💌🌟 In this neon-lit 2026, you illuminate my universe brighter than a thousand stars. Together, we\'ll chase dreams, share endless laughs, and build a love story that\'s pure magic. Forever yours with all my heart, Brian ❤️🚀🌈';
+                document.getElementById('secret-message').classList.remove('hidden');
+                confetti({ particleCount: 200, spread: 90, origin: { y: 0.8 }, shapes: ['heart'], colors: ['#ff69b4', '#ff1493'] });
+            } else {
+                alert('Oops! VIP Password Only for Special Hearts 🔒 Try Again with Love! 💖');
+            }
+        });
+
+        // Adorable floating heart particles instead of circles
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const particles = [];
+        for(let i=0; i<150; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: Math.random() * 8 + 4,
+                speed: Math.random() * 1.5 + 0.5,
+                color: `hsl(${Math.random()*60 + 300}, 100%, 70%)` // Neon pinks & purples
+            });
+        }
+        function drawHeart(x, y, size, color) {
+            ctx.beginPath();
+            ctx.moveTo(x, y + size / 4);
+            ctx.bezierCurveTo(x, y, x - size / 2, y, x - size / 2, y + size / 2);
+            ctx.bezierCurveTo(x - size / 2, y + size * 3 / 4, x, y + size * 3 / 4, x, y + size);
+            ctx.bezierCurveTo(x, y + size * 3 / 4, x + size / 2, y + size * 3 / 4, x + size / 2, y + size / 2);
+            ctx.bezierCurveTo(x + size / 2, y, x, y, x, y + size / 4);
+            ctx.fillStyle = color;
+            ctx.fill();
+        }
+        function draw() {
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            particles.forEach(p => {
+                drawHeart(p.x, p.y, p.size, p.color);
+                p.y -= p.speed;
+                if(p.y < -p.size) p.y = canvas.height + p.size;
+                p.x += Math.sin(Date.now()/1000 + p.size) * 0.8;
+                if(p.x < -p.size) p.x = canvas.width + p.size;
+                else if(p.x > canvas.width + p.size) p.x = -p.size;
+            });
+            requestAnimationFrame(draw);
+        }
+        draw();
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
     </script>
 </body>
     </html>
