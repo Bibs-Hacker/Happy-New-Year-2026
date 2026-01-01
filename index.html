@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 Glows with You – From Tech Brian 💡💖🎆</title>
+    <meta name="description" content="Personalized, Adorable Happy New Year 2026 Wishes Powered by Tech Brian! Let's Glow Up Together! 🌟">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="data:application/manifest+json,{
+        %22name%22:%222026%20Glows%20with%20You%22,
+        %22short_name%22:%22Glow2026%22,
+        %22start_url%22:%22.%22,
+        %22display%22:%22standalone%22,
+        %22background_color%22:%22%23000000%22,
+        %22theme_color%22:%22%2300ffcc%22,
+        %22icons%22:[{
+            %22src%22:%22https://files.catbox.moe/74tj86.jpg%22,
+            %22sizes%22:%22192x192%22,
+            %22type%22:%22image/jpeg%22
+        },{
+            %22src%22:%22https://files.catbox.moe/74tj86.jpg%22,
+            %22sizes%22:%22512x512%22,
+            %22type%22:%22image/jpeg%22
+        }]
+    }">
+    
+    <!-- Basic Service Worker for PWA installability -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('data:text/javascript,');
+        }
+    </script>
+    
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <style>
+        :root {
+            --bg-gradient1: linear-gradient(135deg, #000000, #0a0033, #330066, #660033, #003300);
+            --bg-gradient2: linear-gradient(135deg, #003300, #660033, #330066, #0a0033, #000000);
+            --bg-gradient3: linear-gradient(135deg, #000033, #003366, #006633, #330066, #660033);
+            --neon-cyan: #00ffff;
+            --neon-magenta: #ff00ff;
+            --neon-yellow: #ffff00;
+            --neon-pink: #ff69b4;
+            --neon-green: #39ff14;
+            --text-light: #ffffff;
+        }
+        body.dark {
+            background: var(--bg-gradient1);
+            color: var(--text-light);
+            animation: bg-smooth-fade 30s infinite alternate;
+            background-size: 600% 600%;
+        }
+        @keyframes bg-smooth-fade {
+            0% { background: var(--bg-gradient1); filter: brightness(1) hue-rotate(0deg); }
+            33% { background: var(--bg-gradient2); filter: brightness(1.2) hue-rotate(120deg); }
+            66% { background: var(--bg-gradient3); filter: brightness(1.4) hue-rotate(240deg); }
+            100% { background: var(--bg-gradient1); filter: brightness(1) hue-rotate(360deg); }
+        }
+        body.light {
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2, #ffd1dc, #d1fffb, #ffffd1);
+            color: #333;
+        }
+        body { margin:0; height:100vh; font-family: 'Segoe UI', sans-serif; overflow:hidden; transition: background 1s ease; }
+        .screen { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; transition: opacity 1.5s ease-in-out, transform 1s ease; opacity:1; }
+        .hidden { opacity:0; pointer-events:none; transform: translateY(20px); }
+        h1, h2 {
+            font-size: 6rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-magenta), var(--neon-yellow), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: neon-flicker 0.1s infinite alternate, neon-super-glow 1.8s infinite alternate;
+            text-shadow: 
+                0 0 10px var(--neon-cyan),
+                0 0 20px var(--neon-cyan),
+                0 0 40px var(--neon-cyan),
+                0 0 80px var(--neon-magenta),
+                0 0 120px var(--neon-magenta),
+                0 0 160px var(--neon-yellow),
+                0 0 200px var(--neon-green),
+                0 0 240px var(--neon-pink);
+        }
+        @keyframes neon-flicker { 0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; } 20%, 22%, 24%, 55% { opacity: 0.8; } }
+        @keyframes neon-super-glow { from { text-shadow: 0 0 20px var(--neon-cyan), 0 0 40px var(--neon-cyan), 0 0 80px var(--neon-magenta), 0 0 120px var(--neon-yellow); } to { text-shadow: 0 0 40px var(--neon-cyan), 0 0 80px var(--neon-cyan), 0 0 160px var(--neon-magenta), 0 0 240px var(--neon-magenta), 0 0 320px var(--neon-yellow), 0 0 400px var(--neon-green), 0 0 480px var(--neon-pink); } }
+        input { padding:20px 50px; font-size:2.2rem; border-radius:50px; border:4px solid var(--neon-cyan); background:rgba(0,0,0,0.4); color:var(--text-light); box-shadow: 0 0 20px var(--neon-cyan), 0 0 60px var(--neon-magenta), 0 0 100px var(--neon-yellow), inset 0 0 40px rgba(0,255,255,0.3); animation: input-ultra-glow 1.5s infinite alternate; transition: all 0.5s ease; }
+        @keyframes input-ultra-glow { from { box-shadow: 0 0 30px var(--neon-cyan), 0 0 80px var(--neon-magenta); } to { box-shadow: 0 0 80px var(--neon-cyan), 0 0 160px var(--neon-magenta), 0 0 240px var(--neon-yellow); } }
+        button { margin-top:30px; padding:22px 60px; font-size:2.2rem; background: linear-gradient(45deg, var(--neon-cyan), var(--neon-magenta)); color:#000; border:none; border-radius:50px; cursor:pointer; box-shadow: 0 0 40px var(--neon-cyan), 0 0 100px var(--neon-magenta), 0 0 160px var(--neon-yellow), 0 0 220px var(--neon-green); animation: button-explode 2s infinite; transition: all 0.5s ease; }
+        @keyframes button-explode { 0%, 100% { transform:scale(1); box-shadow: 0 0 40px var(--neon-cyan), 0 0 100px var(--neon-magenta); } 50% { transform:scale(1.1); box-shadow: 0 0 100px var(--neon-cyan), 0 0 200px var(--neon-magenta), 0 0 300px var(--neon-yellow); } }
+        button:hover { background: linear-gradient(45deg, var(--neon-yellow), var(--neon-pink)); box-shadow: 0 0 120px var(--neon-cyan), 0 0 240px var(--neon-magenta), 0 0 360px var(--neon-yellow), 0 0 480px var(--neon-pink); }
+        #particles { position:absolute; inset:0; pointer-events:none; z-index:1; }
+        .features { position:absolute; top:30px; right:30px; display:flex; gap:20px; }
+        .feat-btn { background:rgba(255,255,255,0.15); padding:18px; border-radius:50%; font-size:2.5rem; box-shadow: 0 0 40px var(--neon-cyan), 0 0 80px var(--neon-magenta), 0 0 120px var(--neon-yellow); animation: feat-ultra-spin 3s infinite linear; transition: all 0.5s ease; }
+        @keyframes feat-ultra-spin { 0% { transform:rotate(0deg) scale(1); box-shadow: 0 0 40px var(--neon-cyan); } 100% { transform:rotate(360deg) scale(1.2); box-shadow: 0 0 120px var(--neon-magenta), 0 0 200px var(--neon-yellow); } }
+        footer { position:absolute; bottom:30px; font-size:1.8rem; text-shadow: 0 0 20px var(--neon-cyan), 0 0 40px var(--neon-magenta), 0 0 60px var(--neon-yellow); animation: footer-ultra 4s infinite alternate; transition: all 0.5s ease; }
+        @keyframes footer-ultra { from { text-shadow: 0 0 20px var(--neon-cyan); } to { text-shadow: 0 0 80px var(--neon-cyan), 0 0 160px var(--neon-magenta), 0 0 240px var(--neon-yellow); } }
+        #message-text, #counter, #countdown { text-shadow: 0 0 20px var(--neon-cyan), 0 0 40px var(--neon-magenta), 0 0 60px var(--neon-yellow), 0 0 80px var(--neon-green); transition: all 0.5s ease; }
+        #secret-message { color: var(--neon-pink); text-shadow: 0 0 30px var(--neon-pink), 0 0 60px var(--neon-pink), 0 0 90px var(--neon-yellow), 0 0 120px var(--neon-cyan); animation: heartBeat 1.2s infinite; font-size:2.5rem; line-height:1.6; max-width:80%; }
+        #typewriter { opacity:0; transition: opacity 0.5s ease; }
+        .typing { opacity:1; }
+        #secret-img { max-width:300px; margin-top:20px; border-radius:20px; box-shadow:0 0 50px var(--neon-pink); transition: transform 0.5s ease; }
+        #secret-img:hover { transform: scale(1.05); }
+    </style>
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+</head>
+<body class="dark">
+    <audio id="bg-music" loop src="https://files.catbox.moe/7s5hz5.mp3"></audio>
+
+    <div id="splash" class="screen">
+        <img src="https://files.catbox.moe/74tj86.jpg" alt="Tech Brian Icon" width="220" style="border-radius:50%; box-shadow:0 0 80px var(--neon-cyan), 0 0 160px var(--neon-magenta), 0 0 240px var(--neon-yellow); animation: icon-spin 4s infinite linear; transition: all 1s ease;">
+        <h1>Powered by Tech Brian 💡</h1>
+        <p style="font-size:3rem; text-shadow:0 0 40px var(--neon-magenta), 0 0 80px var(--neon-yellow); transition: all 0.5s ease;">2026 Begins Now! Let's Make It INTENSE! 🌈❤️</p>
+        <div id="loading" style="font-size:2rem; animation: heartbeat 0.8s infinite; transition: all 0.5s ease;">Igniting Ultra Neon Fireworks... 💥❤️✨</div>
+    </div>
+
+    <div id="input-screen" class="screen hidden">
+        <h2>Hey There, Shining Star! What’s Your Beautiful Name? ✨🌟</h2>
+        <input type="text" id="name-input" placeholder="Enter Your Magical Name 💖">
+        <button id="submit-btn">Light Up My Year & Let's GLOW! ✨🚀</button>
+    </div>
+
+    <div id="welcome-screen" class="screen hidden">
+        <h1 id="welcome-name"></h1>
+        <p style="font-size:3rem; text-shadow:0 0 40px var(--neon-magenta);">Welcome to Your Epic 2026 Journey! 🚀💖</p>
+    </div>
+
+    <div id="message-screen" class="screen hidden">
+        <div class="features">
+            <div class="feat-btn" id="theme-toggle">🌗</div>
+            <div class="feat-btn" id="share-btn">📩</div>
+            <div class="feat-btn" id="secret-btn">💌</div>
+        </div>
+        <h1 id="neon-name"></h1>
+        <p id="message-text" style="font-size:2.8rem; max-width:80%; line-height:1.6;"></p>
+        <div id="counter" style="font-size:2rem; margin-top:40px;">Loading Real-Time Blessings... 🎉🌟</div>
+        <div id="countdown" style="font-size:2.2rem;"></div>
+        <canvas id="particles"></canvas>
+    </div>
+
+    <div id="secret-screen" class="screen hidden">
+        <h2>Enter VIP Password for Eternal Magic 🔒💖</h2>
+        <input type="password" id="passcode" placeholder="Your Secret Key?">
+        <button id="reveal-secret">Unlock the Heartfelt Promise! 💌</button>
+        <div id="typewriter" class="hidden">
+            <p id="secret-message"></p>
+            <img id="secret-img" src="https://d.uguu.se/bpuhQnKa.jpg" alt="Special Memory">
+        </div>
+        <button id="back-btn" style="margin-top:20px;">Back to Main 🌟</button>
+    </div>
+
+    <footer>Made with Infinite ❤️ & Ultra Neon Magic by <strong>Tech Brian</strong> — Welcome to an Explosive 2026! 🌈🎆</footer>
+
+    <script>
+        // Supabase (replace with your keys)
+        const SUPABASE_URL = 'https://your-supabase-url.supabase.co';
+        const SUPABASE_ANON_KEY = 'your-anon-key';
+        const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        let currentCount = 0;
+        async function getBlessingCount() {
+            const { data, error } = await supabase.from('blessings').select('count(*)');
+            if (!error && data) {
+                currentCount = data[0].count || 0;
+                updateCounterDisplay();
+            }
+        }
+        async function incrementBlessing() {
+            await supabase.from('blessings').insert({});
+        }
+        supabase.channel('blessings-channel')
+            .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'blessings' }, () => {
+                currentCount++;
+                updateCounterDisplay();
+            })
+            .subscribe();
+
+        function updateCounterDisplay() {
+            document.getElementById('counter').innerText = `${currentCount} Adorable Souls Have Received Their 2026 Blessing from Tech Brian & Merab! 🎉🌟`;
+        }
+
+        // Countdown
+        function updateCountdown() {
+            const now = new Date();
+            const nextYear = new Date('2027-01-01');
+            const diff = nextYear - now;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            document.getElementById('countdown').innerText = `Countdown to 2027: ${days}d ${hours}h ${minutes}m ${seconds}s – GLOW INTENSELY! 🎆🚀`;
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Smooth Splash Fade
+        setTimeout(() => {
+            document.getElementById('splash').classList.add('hidden');
+            document.getElementById('input-screen').classList.remove('hidden');
+            confetti({ particleCount: 500, spread: 100, origin: { y: 0.6 }, colors: ['#00ffff','#ff00ff','#ffff00','#ff69b4'] });
+        }, 3000); // Shorter timeout for smoother experience
+
+        // Submit
+        document.getElementById('submit-btn').addEventListener('click', generateMessage);
+        document.getElementById('name-input').addEventListener('keypress', e => { if(e.key === 'Enter') generateMessage(); });
+
+        async function generateMessage() {
+            const name = document.getElementById('name-input').value.trim() || 'Amazing Friend';
+            document.getElementById('input-screen').classList.add('hidden');
+            document.getElementById('welcome-screen').classList.remove('hidden');
+            document.getElementById('welcome-name').innerText = `Hello, ${name}!`;
+            document.getElementById('bg-music').play();
+
+            setTimeout(async () => {
+                document.getElementById('welcome-screen').classList.add('hidden');
+                document.getElementById('message-screen').classList.remove('hidden');
+                document.getElementById('neon-name').innerText = name.toUpperCase();
+                document.getElementById('message-text').innerHTML = `Hey ${name},<br>Step into 2026 with unyielding fire in your soul! This year is your canvas to paint with bold strokes of ambition, resilience, and triumph. Leave the echoes of 2025's trials behind as mere lessons that forged your unbreakable spirit. Rise like a phoenix, harness every ounce of your potential, chase those dreams with relentless passion, and surround yourself with positivity that amplifies your glow. Remember, challenges are your fuel, failures your teachers, and successes your milestones. Build deeper connections, nurture your well-being, innovate fearlessly, and let your energy inspire the world. You've got the techy edge, the vibing heart, and the power to make 2026 legendary – own it, shine brighter than ever, and let's conquer together! 💫🔥🚀🌟❤️🌈✨🌌`;
+                
+                await incrementBlessing();
+                
+                confetti({ particleCount: 600, spread: 160, origin: { y: 0.5 }, shapes: ['star','circle'], colors: ['#00ffff','#ff00ff','#ffff00','#ff69b4','#39ff14'] });
+            }, 4000);
+        }
+
+        // Features
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            document.body.classList.toggle('light');
+        });
+        document.getElementById('share-btn').addEventListener('click', () => {
+            const name = document.getElementById('neon-name').innerText || '';
+            const url = `${location.href}?name=${encodeURIComponent(name)}`;
+            navigator.clipboard.writeText(url).then(() => alert('Link Copied! Spread the Neon Fire ✨💖'));
+        });
+        document.getElementById('secret-btn').addEventListener('click', () => {
+            document.getElementById('message-screen').classList.add('hidden');
+            document.getElementById('secret-screen').classList.remove('hidden');
+        });
+        document.getElementById('back-btn').addEventListener('click', () => {
+            document.getElementById('secret-screen').classList.add('hidden');
+            document.getElementById('message-screen').classList.remove('hidden');
+            document.getElementById('typewriter').classList.add('hidden');
+            document.getElementById('secret-message').innerText = '';
+            document.getElementById('passcode').value = '';
+        });
+        document.getElementById('reveal-secret').addEventListener('click', () => {
+            if (document.getElementById('passcode').value === '#Merab@01') {
+                const message = 'My Dearest Merab, Eternal Light of My Universe 💌🌟<br><br>In the cosmic dance of 2026, you are my guiding star, the heartbeat syncing with every neon pulse in this techy world we share. From the depths of my soul, I promise you a love that transcends time – unwavering, passionate, and infinitely growing. We\'ll weave dreams into reality, conquer galaxies hand in hand, share whispers under starry skies, and build a fortress of memories that no force can shatter. You are my muse, my adventure, my forever promise. With every breath, I vow to cherish, protect, and adore you beyond words. Together, we\'re unbreakable, unstoppable, eternal. I love you more than the infinite code of the cosmos. Yours forever and always, Brian ❤️🔥🌈🚀🌌✨';
+                document.getElementById('typewriter').classList.remove('hidden');
+                typeWriter(message, 0);
+                confetti({ particleCount: 300, spread: 100, shapes: ['heart'], colors: ['#ff69b4','#ff1493'] });
+            } else {
+                alert('VIP Only 🔒 Keep Trying with Love! 💖');
+            }
+        });
+
+        function typeWriter(text, i) {
+            if (i < text.length) {
+                document.getElementById('secret-message').innerHTML += text.charAt(i);
+                i++;
+                setTimeout(() => typeWriter(text, i), 50);
+            }
+        }
+
+        // Particles
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const particles = [];
+        for(let i = 0; i < 250; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: Math.random() * 12 + 6,
+                speed: Math.random() * 3 + 1,
+                color: ['#00ffff','#ff00ff','#ffff00','#ff69b4','#39ff14'][Math.floor(Math.random()*5)],
+                glow: Math.random() * 20 + 20
+            });
+        }
+        function drawHeart(x, y, size, color, glow) {
+            ctx.shadowColor = color;
+            ctx.shadowBlur = glow;
+            ctx.beginPath();
+            ctx.moveTo(x, y + size / 4);
+            ctx.bezierCurveTo(x, y, x - size / 2, y, x - size / 2, y + size / 2);
+            ctx.bezierCurveTo(x - size / 2, y + size * 3 / 4, x, y + size * 3 / 4, x, y + size);
+            ctx.bezierCurveTo(x, y + size * 3 / 4, x + size / 2, y + size * 3 / 4, x + size / 2, y + size / 2);
+            ctx.bezierCurveTo(x + size / 2, y, x, y, x, y + size / 4);
+            ctx.fillStyle = color;
+            ctx.fill();
+        }
+        function draw() {
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            particles.forEach(p => {
+                drawHeart(p.x, p.y, p.size, p.color, p.glow + Math.sin(Date.now()/200) * 20);
+                p.y -= p.speed;
+                if(p.y < -p.size) p.y = canvas.height + p.size;
+                p.x += Math.sin(Date.now()/500 + p.size) * 2;
+            });
+            requestAnimationFrame(draw);
+        }
+        draw();
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        getBlessingCount();
+    </script>
+</body>
+</html>
